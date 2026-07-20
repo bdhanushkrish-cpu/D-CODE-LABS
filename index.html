@@ -1,0 +1,800 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Code Labs</title>
+    <!-- High-Tech Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-main: #c5c6c7;
+            --accent-purple: #9d4edd;
+            --accent-green: #06d6a0;
+            --sky-blue: #00b4d8;
+            --glow-blue: #90e0ef;
+            --danger-red: #ff4d4d;
+            --warning-amber: #ffb703;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* SCREEN 1: SPLASH SCREEN */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1a0f2e 0%, #050508 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+
+        .logo-frame {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-purple);
+            box-shadow: 0 0 25px var(--accent-purple), inset 0 0 15px var(--accent-purple);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite alternate;
+            overflow: hidden;
+        }
+
+        .logo-frame img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent-green);
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .btn-enter {
+            font-family: 'Orbitron', sans-serif;
+            background: transparent;
+            color: #fff;
+            border: 2px solid var(--accent-green);
+            padding: 14px 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(6, 214, 160, 0.2);
+        }
+
+        .btn-enter:hover {
+            background: var(--accent-green);
+            color: #0b0c10;
+            box-shadow: 0 0 25px var(--accent-green);
+            transform: scale(1.05);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px var(--accent-purple); }
+            100% { transform: scale(1.03); box-shadow: 0 0 35px var(--accent-green); border-color: var(--accent-green); }
+        }
+
+        /* SCREEN 2: MAIN DASHBOARD */
+        #main-screen {
+            display: none;
+            padding: 20px 20px 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* NAVIGATION TOP BAR */
+        .top-nav {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+            border-color: var(--accent-purple);
+            background: rgba(157, 78, 221, 0.1);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.2);
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(197, 198, 199, 0.1);
+            padding-bottom: 20px;
+        }
+
+        .header-logo-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .small-logo-frame {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-purple);
+            overflow: hidden;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .small-logo-frame img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+
+        /* PROJECTS GRID ELEMENTS */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: linear-gradient(145deg, #1f2833, #151b22);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            min-height: 220px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(6, 214, 160, 0.1);
+            border-color: rgba(6, 214, 160, 0.3);
+        }
+
+        .project-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.03);
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            user-select: none;
+            transition: color 0.3s;
+        }
+
+        .project-card:hover .project-num {
+            color: rgba(6, 214, 160, 0.08);
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+            padding-right: 40px;
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #9499a1;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+        }
+
+        .project-link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s, text-shadow 0.2s;
+            font-size: 0.95rem;
+            word-break: break-all;
+        }
+
+        .project-link:hover {
+            color: var(--glow-blue);
+            text-shadow: 0 0 8px rgba(144, 224, 239, 0.6);
+        }
+
+        .management-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action-icon {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-action-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-edit svg { fill: var(--warning-amber); }
+        .btn-delete svg { fill: var(--danger-red); }
+
+        .btn-action-icon:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* FLOATING ACTION ADD BUTTON */
+        .fab {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-purple), #7b2cbf);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(157, 78, 221, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 99;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 4px 25px rgba(6, 214, 160, 0.6);
+            background: linear-gradient(135deg, var(--accent-green), #04a57a);
+        }
+
+        .fab svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        /* POPUP SECURITY MODALS */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #9499a1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #151b22;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-main);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-submit {
+            background: var(--accent-green);
+            color: #0b0c10;
+        }
+
+        .btn-submit:hover {
+            background: #04a57a;
+        }
+
+        .btn-danger {
+            background: var(--danger-red);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #cc3333;
+        }
+
+        /* BRANDING FOOTER */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(197, 198, 199, 0.4);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        footer span {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        /* LIVE SYSTEM ALERT TOASTS */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff4d4d;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 3000;
+        }
+
+        .toast.success {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTERACTION ALERT NOTIFIER -->
+    <div id="toast" class="toast">Incorrect Password!</div>
+
+    <!-- PAGE 1: SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="logo-frame">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><path d='M250,90 c-15,-20 -40,-25 -45,-5 c-8,30 25,35 25,55 c0,15 -25,25 -25,35 c20,0 35,-15 45,-30 c5,10 5,25 -5,35 c20,-5 25,-25 20,-45 c15,10 25,5 25,-10 c-15,5 -25,-5 -40,-35 Z' fill='%23a22a4b'/><text x='250' y='210' font-family='Orbitron, sans-serif' font-weight='bold' font-size='100' fill='%23a22a4b' text-anchor='middle'>D</text><text x='250' y='320' font-family='Orbitron, sans-serif' font-weight='bold' font-size='75' fill='%23582fa3' text-anchor='middle'>{CODE}</text><text x='250' y='395' font-family='Orbitron, sans-serif' font-weight='900' font-size='50' fill='%23287661' text-anchor='middle'>LABS.</text></svg>" alt="D-Code Labs Logo">
+        </div>
+        <div class="app-title">D-CODE LABS</div>
+        <button class="btn-enter" id="enter-btn">ENTER LAB</button>
+    </div>
+
+    <!-- PAGE 2: MAIN DASHBOARD -->
+    <div id="main-screen">
+        <!-- TOP NAVIGATION CONTROL BAR -->
+        <div class="top-nav">
+            <button class="btn-back" id="back-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Terminal
+            </button>
+        </div>
+
+        <header>
+            <div class="header-logo-title">
+                <div class="small-logo-frame">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><text x='250' y='300' font-family='Orbitron, sans-serif' font-weight='bold' font-size='300' fill='%23a22a4b' text-anchor='middle'>D</text></svg>" alt="D Logo">
+                </div>
+                <h1 class="app-title" style="font-size: 1.8rem; margin-bottom: 0;">D-CODE LABS</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search projects by name or technology...">
+            </div>
+        </header>
+
+        <!-- Dynamic Projects Grid -->
+        <main class="projects-grid" id="projects-container">
+            <!-- Populated via script -->
+        </main>
+
+        <!-- FLOATING PLUS BUTTON -->
+        <div class="fab" id="add-project-btn" title="Add New Project">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        </div>
+
+        <footer>
+            Created & Owned by <span>DHANUSH BK</span>
+        </footer>
+    </div>
+
+    <!-- PASSWORD AUTH MODAL -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="auth-modal-title">Admin Authentication</h3>
+            <div class="form-group">
+                <label for="admin-password">Enter Security Key</label>
+                <input type="password" id="admin-password" placeholder="••••••••">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-cancel" id="auth-cancel">Cancel</button>
+                <button class="btn btn-submit" id="auth-submit">Verify</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT PROJECT MODAL -->
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="project-modal-title">Launch New Project</h3>
+            <div class="form-group">
+                <label for="proj-title">Project Name</label>
+                <input type="text" id="proj-title" placeholder="E.g., Web Portfolio">
+            </div>
+            <div class="form-group">
+                <label for="proj-desc">Description / Tech Stack</label>
+                <textarea id="proj-desc" rows="3" placeholder="Brief details about what makes this project awesome..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="proj-link">Deployment / Repository Link</label>
+                <input type="url" id="proj-link" placeholder="https://github.com/...">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-cancel" id="proj-cancel">Cancel</button>
+                <button class="btn btn-submit" id="proj-submit">Publish Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEXTUAL DELETE CONFIRMATION MODAL -->
+    <div class="modal" id="delete-modal">
+        <div class="modal-content">
+            <h3 class="modal-title" style="color: var(--danger-red);">Confirm Deletion</h3>
+            <p style="margin-bottom: 25px; line-height: 1.5; color: #9499a1;">Are you absolutely sure you want to permanently wipe this project from D-Code Labs? This operation cannot be undone.</p>
+            <div class="btn-group">
+                <button class="btn btn-cancel" id="delete-cancel">Cancel</button>
+                <button class="btn btn-danger" id="delete-confirm">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE CONTROLLER -->
+    <script>
+        // Start completely fresh (Clean database with no preset projects)
+        let projects = JSON.parse(localStorage.getItem('dcode_projects')) || [];
+
+        // Global DOM Target Hooks
+        const splashScreen = document.getElementById('splash-screen');
+        const mainScreen = document.getElementById('main-screen');
+        const enterBtn = document.getElementById('enter-btn');
+        const backBtn = document.getElementById('back-btn');
+        const container = document.getElementById('projects-container');
+        const searchInput = document.getElementById('search-input');
+        const fab = document.getElementById('add-project-btn');
+        const authModal = document.getElementById('auth-modal');
+        const projectModal = document.getElementById('project-modal');
+        const deleteModal = document.getElementById('delete-modal');
+        const toast = document.getElementById('toast');
+
+        // Session Tracking States
+        let currentAction = 'add'; 
+        let targetedProjectIndex = null;
+
+        // SCREEN TRANSITION LOGIC
+        // Forward: Splash Screen -> Dashboard
+        enterBtn.onclick = function() {
+            splashScreen.style.opacity = '0';
+            mainScreen.style.display = 'block';
+            renderProjects(projects);
+            setTimeout(() => { splashScreen.style.visibility = 'hidden'; }, 400);
+        };
+
+        // Backward: Dashboard -> Splash Screen
+        backBtn.onclick = function() {
+            splashScreen.style.visibility = 'visible';
+            splashScreen.style.opacity = '1';
+            setTimeout(() => { mainScreen.style.display = 'none'; }, 400);
+        };
+
+        // INFINITE AUTOMATIC AUTO-NUMBERING ENGINE
+        function renderProjects(dataset) {
+            container.innerHTML = '';
+            if(dataset.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: rgba(255,255,255,0.2); margin-top: 60px; font-size: 0.95rem; letter-spacing: 1px;">No active projects deployed yet. Click '+' to add one.</p>`;
+                return;
+            }
+            
+            dataset.forEach((proj, index) => {
+                // Formats numbers cleanly: 01, 02... out to 99, 100, 101, up to infinity items.
+                const sequentialIndex = index + 1;
+                const formattedNum = sequentialIndex < 10 ? String(sequentialIndex).padStart(2, '0') : String(sequentialIndex);
+                
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <div class="project-num">${formattedNum}</div>
+                    <div>
+                        <h2 class="project-title">${proj.title}</h2>
+                        <p class="project-desc">${proj.desc}</p>
+                    </div>
+                    <div class="card-footer-actions">
+                        <a href="${proj.link}" target="_blank" class="project-link">
+                            Launch Project 
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                        <div class="management-actions">
+                            <button class="btn-action-icon btn-edit" onclick="triggerSecureAction('edit', ${index})" title="Edit Project">
+                                <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            </button>
+                            <button class="btn-action-icon btn-delete" onclick="triggerSecureAction('delete', ${index})" title="Delete Project">
+                                <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Live Search Input Filtering
+        searchInput.oninput = function(e) {
+            const query = e.target.value.toLowerCase();
+            const filtered = projects.filter(p => 
+                p.title.toLowerCase().includes(query) || 
+                p.desc.toLowerCase().includes(query)
+            );
+            renderProjects(filtered);
+        };
+
+        // Centralized Security Panel Gatekeeper
+        function triggerSecureAction(action, index = null) {
+            currentAction = action;
+            targetedProjectIndex = index;
+            
+            const authTitle = document.getElementById('auth-modal-title');
+            if (action === 'add') authTitle.innerText = "Authorization: Add Project";
+            if (action === 'edit') authTitle.innerText = "Authorization: Edit Project";
+            if (action === 'delete') authTitle.innerText = "Authorization: Delete Project";
+
+            document.getElementById('admin-password').value = '';
+            authModal.classList.add('active');
+            document.getElementById('admin-password').focus();
+        }
+
+        // Setup triggers for global operations
+        fab.onclick = function() { triggerSecureAction('add'); };
+
+        document.getElementById('auth-cancel').onclick = function() { authModal.classList.remove('active'); };
+        document.getElementById('auth-submit').onclick = checkPassword;
+        document.getElementById('admin-password').onkeypress = function(e) {
+            if(e.key === 'Enter') checkPassword();
+        };
+
+        function showToast(message, type = 'error') {
+            toast.innerText = message;
+            if(type === 'success') toast.classList.add('success');
+            else toast.classList.remove('success');
+            
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function checkPassword() {
+            const passInput = document.getElementById('admin-password').value;
+            if(passInput === "75575718") {
+                authModal.classList.remove('active');
+                proceedToSecureAction();
+            } else {
+                showToast("Access Denied: Invalid Security Key");
+            }
+        }
+
+        function proceedToSecureAction() {
+            if (currentAction === 'add') {
+                document.getElementById('project-modal-title').innerText = "Launch New Project";
+                document.getElementById('proj-title').value = '';
+                document.getElementById('proj-desc').value = '';
+                document.getElementById('proj-link').value = '';
+                projectModal.classList.add('active');
+            } else if (currentAction === 'edit') {
+                document.getElementById('project-modal-title').innerText = "Modify Project Matrix";
+                const activeData = projects[targetedProjectIndex];
+                document.getElementById('proj-title').value = activeData.title;
+                document.getElementById('proj-desc').value = activeData.desc;
+                document.getElementById('proj-link').value = activeData.link;
+                projectModal.classList.add('active');
+            } else if (currentAction === 'delete') {
+                deleteModal.classList.add('active');
+            }
+        }
+
+        // Add / Edit Submission Panel Handlers
+        document.getElementById('proj-cancel').onclick = function() { projectModal.classList.remove('active'); };
+        document.getElementById('proj-submit').onclick = function() {
+            const title = document.getElementById('proj-title').value.trim();
+            const desc = document.getElementById('proj-desc').value.trim();
+            let link = document.getElementById('proj-link').value.trim();
+
+            if(!title || !desc || !link) {
+                showToast("Please compile all mandatory metrics fields.");
+                return;
+            }
+
+            if (!/^https?:\/\//i.test(link)) {
+                link = 'https://' + link;
+            }
+
+            if (currentAction === 'add') {
+                projects.push({ title, desc, link });
+                showToast("Project deployed successfully!", "success");
+            } else if (currentAction === 'edit') {
+                projects[targetedProjectIndex] = { title, desc, link };
+                showToast("Project matrix updated successfully!", "success");
+            }
+
+            localStorage.setItem('dcode_projects', JSON.stringify(projects));
+            projectModal.classList.remove('active');
+            renderProjects(projects);
+        };
+
+        // Delete Execution Confirmation Hooks
+        document.getElementById('delete-cancel').onclick = function() { deleteModal.classList.remove('active'); };
+        document.getElementById('delete-confirm').onclick = function() {
+            projects.splice(targetedProjectIndex, 1);
+            localStorage.setItem('dcode_projects', JSON.stringify(projects));
+            deleteModal.classList.remove('active');
+            renderProjects(projects);
+            showToast("Project permanently purged from core storage.", "success");
+        };
+    </script>
+</body>
+</html>
